@@ -1,10 +1,13 @@
 const sys = server.registerSystem(0, 0);
 let player: IEntity;
+let playerName;
 
 sys.initialize = function (){
     server.log("3 heart mod by Fjun loaded"); 
+
     sys.listenForEvent<IBlockDestructionStartedEventData>("minecraft:block_destruction_started", eventData =>{
         player = eventData.data.player;
+        playerName = sys.getComponent<INameableComponent>(player, MinecraftComponent.Nameable).data.name;
         setHeart(0, 9, 6);
         setHeart(10, 19, 8);
         setHeart(20, 29, 10);
@@ -17,15 +20,13 @@ sys.initialize = function (){
 }
 
 function setHeart(min: number, max: number, hp: number){
-    sys.executeCommand("testfor @a[lm=" + min + ",l=" + max + "]", data =>{
+    sys.executeCommand("testfor @a[name=" + playerName + ",lm=" + min + ",l=" + max + "]", data =>{
         let jsonData: ITestFor = JSON.parse(JSON.stringify(data));
         if(jsonData.statusMessage != "No targets matched selector"){
-            for(let each in jsonData.victim){
-                if(jsonData.victim[each] == sys.getComponent<INameableComponent>(player, MinecraftComponent.Nameable).data.name){
-                    let health = sys.getComponent<IHealthComponent>(player, MinecraftComponent.Health);
-                    health.data.max = hp;
-                    sys.applyComponentChanges(player, health);
-                }
+            if(jsonData.victim[0] == playerName){
+                let health = sys.getComponent<IHealthComponent>(player, MinecraftComponent.Health);
+                health.data.max = hp;
+                sys.applyComponentChanges(player, health);
             }
         }
     })
