@@ -1,0 +1,18 @@
+{
+  "format_version": 1,
+  "header": {
+    "name": "3 heart",
+    "description": "by Fjun",
+    "uuid": "e59b52cd-1124-4140-90de-d2e701c3f785",
+    "version": [1, 0, 0],
+    "min_engine_version": [1, 12, 0]
+  },
+  "modules": [
+    {
+      "description": "data",
+      "type": "data",
+      "uuid": "5672373d-5518-45aa-ae68-425915ed584a",
+      "version": [0, 0, 0]
+    }
+  ]
+}
