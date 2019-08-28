@@ -19,13 +19,14 @@ sys.initialize = function (){
     });
 }
 
-function setHeart(min: number, max: number, hp: number){
+async function setHeart(min: number, max: number, maxhp: number){
     sys.executeCommand("testfor @a[name=" + playerName + ",lm=" + min + ",l=" + max + "]", data =>{
         let jsonData: ITestFor = JSON.parse(JSON.stringify(data));
         if(jsonData.statusMessage != "No targets matched selector"){
             if(jsonData.victim[0] == playerName){
                 let health = sys.getComponent<IHealthComponent>(player, MinecraftComponent.Health);
-                health.data.max = hp;
+                health.data.max = maxhp;
+                if(health.data.value > maxhp){health.data.value = maxhp}
                 sys.applyComponentChanges(player, health);
             }
         }
